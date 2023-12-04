@@ -38,7 +38,7 @@ impl Day for Day1 {
             sum += digit;
         }
 
-        println!("Total sum of {}: {}", file_name, sum);
+        println!("Total sum of {} including words: {}", file_name, sum);
     }
 }
 
