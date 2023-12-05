@@ -13,7 +13,7 @@ pub struct Game {
     
     winning_numbers: Vec<u32>,
     numbers: Vec<u32>,
-    matches: RefCell<Vec<u32>>,
+    matches: Vec<u32>,
 }
 
 pub struct Day4 { }
@@ -21,23 +21,19 @@ pub struct Day4 { }
 
 impl Day for Day4 {
     fn main(&self, file_name: &str) {
-        let mut scoring_cards: Vec<usize> = Vec::new();
-
-        let games = parse_file(file_name);
+        let mut games = parse_file(file_name);
         let mut p1sum = 0;
-        for game in &games {
-            let mut matches = Vec::new();
+        for game in &mut games {
             for number in &game.numbers {
                 if game.winning_numbers.contains(&number) {
-                    matches.push(*number);
+                    game.matches.push(*number);
                 }
             }
 
-            if matches.len() != 0 {
-                p1sum += usize::pow(2, (matches.len()-1) as u32);
+            if game.matches.len() != 0 {
+                p1sum += usize::pow(2, (game.matches.len()-1) as u32);
             }
-
-            game.matches.replace(matches);
+            //game.matches.replace(matches);
         }
         println!("Sum of winning tickets for {}: {}", file_name, p1sum);
 
@@ -53,10 +49,10 @@ impl Day for Day4 {
 
 fn game_calc(game: &Game, games: &Vec<Game>) -> usize {
     let mut sum = 1;
-    if game.matches.borrow().len() != 0 {
+    if game.matches.len() != 0 {
         // Find the next N cards that score
         let mut next_cards = Vec::new();
-        for (i, number) in game.matches.borrow().iter().enumerate() {
+        for (i, number) in game.matches.iter().enumerate() {
             next_cards.push(games.iter().find(|x| x.card == game.card + i + 1).unwrap());
         }
         for next_card in next_cards {
@@ -100,7 +96,7 @@ fn parse_file(file_name: &str) -> Vec<Game>{
             card: id,
             winning_numbers,
             numbers,
-            matches: RefCell::new(Vec::new()),
+            matches: Vec::new(),
         };
 
         games.push(game);
