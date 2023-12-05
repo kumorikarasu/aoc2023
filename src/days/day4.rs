@@ -1,7 +1,6 @@
-use std::{fs::File, io::Read, rc::Rc, cell::RefCell};
+use std::{fs::File, io::Read};
 
 use super::r#trait::Day;
-use std::num;
 
 
 // The engineer explains that an engine part seems to be missing from the engine, but nobody can figure out which one. If you can add up all the part numbers in the engine schematic, it should be easy to work out which part is missing.
@@ -52,7 +51,7 @@ fn game_calc(game: &Game, games: &Vec<Game>) -> usize {
     if game.matches.len() != 0 {
         // Find the next N cards that score
         let mut next_cards = Vec::new();
-        for (i, number) in game.matches.iter().enumerate() {
+        for (i, _) in game.matches.iter().enumerate() {
             next_cards.push(games.iter().find(|x| x.card == game.card + i + 1).unwrap());
         }
         for next_card in next_cards {
